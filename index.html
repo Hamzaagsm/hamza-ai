@@ -6,118 +6,245 @@
 <title>Hamza AI 🤖</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#07070f;color:#fff;height:100vh;display:flex;flex-direction:column}
-#head{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:12px;text-align:center;border-bottom:1px solid #2a2a3a;flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:10px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#07070f;color:#fff;min-height:100vh;display:flex;flex-direction:column}
+#head{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:12px;border-bottom:1px solid #2a2a3a;flex-shrink:0}
+#hr{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
 #head h1{font-size:19px;background:linear-gradient(90deg,#4dd2ff,#7a5aff,#ff4d6d);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-#vbtn{background:#16161f;border:1px solid #333;color:#fff;border-radius:20px;padding:6px 12px;font-size:13px;cursor:pointer}
+#st{font-size:11px;padding:4px 10px;border-radius:12px;background:#222}
+#st.ok{background:#0a3d1a;color:#4dff7a}#st.bad{background:#3d0a0a;color:#ff6b6b}
+#vbtn{background:#16161f;border:1px solid #333;color:#fff;border-radius:16px;padding:5px 10px;font-size:12px;cursor:pointer}
 #vbtn.on{background:linear-gradient(135deg,#4dd2ff,#7a5aff);border:none}
-#chat{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;max-width:700px;width:100%;margin:0 auto}
-.msg{max-width:85%;padding:11px 14px;border-radius:16px;font-size:15px;line-height:1.65;word-wrap:break-word;white-space:pre-wrap}
+#tabs{display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.tab{background:#16161f;border:1px solid #333;color:#aaa;border-radius:16px;padding:7px 14px;font-size:13px;cursor:pointer}
+.tab.act{background:linear-gradient(135deg,#4dd2ff,#7a5aff);color:#fff;border:none}
+#main{flex:1;overflow-y:auto;max-width:700px;width:100%;margin:0 auto;padding:14px;display:flex;flex-direction:column}
+.page{display:none;flex-direction:column;gap:10px;flex:1}
+.page.act{display:flex}
+/* chat */
+#chat{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;min-height:200px}
+.msg{max-width:88%;padding:11px 14px;border-radius:16px;font-size:15px;line-height:1.65;word-wrap:break-word;white-space:pre-wrap}
 .msg.u{align-self:flex-end;background:linear-gradient(135deg,#e94560,#ff6b35);border-bottom-right-radius:4px}
 .msg.a{align-self:flex-start;background:#16161f;border:1px solid #2a2a3a;border-bottom-left-radius:4px}
 .typing{align-self:flex-start;background:#16161f;border:1px solid #2a2a3a;padding:12px 16px;border-radius:16px;font-size:14px;color:#888}
-.typing span{animation:blink 1s infinite}.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
-@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+.typing span{animation:bl 1s infinite}.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,100%{opacity:.2}50%{opacity:1}}
 #box{background:#0d0d16;border-top:1px solid #2a2a3a;padding:10px;flex-shrink:0}
 #row{display:flex;gap:8px;max-width:700px;margin:0 auto;align-items:center}
 #inp{flex:1;background:#16161f;border:1px solid #333;border-radius:24px;color:#fff;padding:12px 16px;font-size:15px;outline:none;resize:none;max-height:100px;font-family:inherit}
-#inp:focus{border-color:#4dd2ff}
 .cbtn{border:none;color:#fff;width:48px;height:48px;border-radius:50%;font-size:20px;cursor:pointer;flex-shrink:0}
 #send{background:linear-gradient(135deg,#4dd2ff,#7a5aff)}
-#cSend:disabled{opacity:.4}
 #mic{background:#16161f;border:1px solid #333}
-#mic.rec{background:#e94560;animation:pulse 1s infinite}
-@keyframes pulse{50%{transform:scale(1.1)}}
-#tools{display:flex;gap:6px;max-width:700px;margin:0 auto 8px;flex-wrap:wrap}
-.tbtn{background:#16161f;border:1px solid #333;color:#aaa;border-radius:18px;padding:7px 13px;font-size:12px;cursor:pointer}
+#mic.rec{background:#e94560;animation:pu 1s infinite}
+@keyframes pu{50%{transform:scale(1.12)}}
+/* tools */
+.card{background:#101018;border:1px solid #2a2a3a;border-radius:14px;padding:16px}
+.card h3{font-size:16px;margin-bottom:10px;color:#4dd2ff}
+.card label{font-size:13px;color:#aaa;display:block;margin:8px 0 4px}
+.card select,.card input,.card textarea{width:100%;background:#16161f;border:1px solid #333;color:#fff;border-radius:10px;padding:10px;font-size:14px;font-family:inherit;outline:none}
+.card textarea{min-height:80px;resize:vertical}
+.btn{background:linear-gradient(135deg,#e94560,#ff6b35);border:none;color:#fff;border-radius:12px;padding:13px;font-size:15px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px}
+.btn.b{background:linear-gradient(135deg,#4dd2ff,#7a5aff)}
+.btn:active{transform:scale(.97)}
+.out{background:#0a0a12;border:1px solid #2a2a3a;border-radius:10px;padding:12px;font-size:14px;line-height:1.7;white-space:pre-wrap;max-height:300px;overflow-y:auto;margin-top:10px}
+.note{background:#16161f;border:1px solid #333;border-radius:10px;padding:10px;margin-top:8px;font-size:14px}
+.note small{color:#888}
+.del{background:none;border:none;color:#ff6b6b;font-size:16px;cursor:pointer;float:right}
 </style>
 </head>
 <body>
 <div id="head">
-  <h1>🤖 HAMZA AI</h1>
-  <button id="vbtn" onclick="toggleVoice()">🔇 Awaz Off</button>
-</div>
-<div id="chat"></div>
-<div id="box">
-  <div id="tools">
-    <button class="tbtn" onclick="quick('Aik funny kahani likho')">😂 Kahani</button>
-    <button class="tbtn" onclick="quick('TikTok ke liye viral video idea do')">🔥 Viral Idea</button>
-    <button class="tbtn" onclick="quick('Video title + hashtags banao: ' )">🏷️ Title</button>
-    <button class="tbtn" onclick="clearChat()">🗑️ Saaf</button>
+  <div id="hr">
+    <h1>🤖 HAMZA AI</h1>
+    <span id="st">…</span>
+    <button id="vbtn" onclick="toggleVoice()">🔇</button>
   </div>
+  <div id="tabs">
+    <button class="tab act" onclick="tab('chat')">💬 Baat</button>
+    <button class="tab" onclick="tab('script')">🎬 Script</button>
+    <button class="tab" onclick="tab('title')">🏷️ Title</button>
+    <button class="tab" onclick="tab('notes')">📝 Notes</button>
+  </div>
+</div>
+
+<div id="main">
+  <!-- CHAT -->
+  <div class="page act" id="pg-chat">
+    <div id="chat"></div>
+  </div>
+  <!-- SCRIPT WRITER -->
+  <div class="page" id="pg-script">
+    <div class="card">
+      <h3>🎬 Video Script Banao (foran!)</h3>
+      <label>Mazoo (topic)</label>
+      <input id="sc-topic" placeholder="masalan: bhoot wali kahani">
+      <label>Style</label>
+      <select id="sc-style">
+        <option value="horror">👻 Horror</option>
+        <option value="funny">😂 Funny</option>
+        <option value="moral">💡 Sabaq wali</option>
+        <option value="islamic">☪️ Islamic</option>
+        <option value="love">❤️ Romantic</option>
+      </select>
+      <label>Lambai</label>
+      <select id="sc-len"><option value="3">3 scenes</option><option value="5">5 scenes</option><option value="7">7 scenes</option></select>
+      <button class="btn b" onclick="makeScript()">✨ Script Banao</button>
+      <div class="out" id="sc-out" style="display:none"></div>
+      <button class="btn" id="sc-copy" style="display:none" onclick="copyOut('sc-out')">📋 Copy Karo</button>
+    </div>
+  </div>
+  <!-- TITLE -->
+  <div class="page" id="pg-title">
+    <div class="card">
+      <h3>🏷️ Title + Hashtags</h3>
+      <label>Video kis bare me hai?</label>
+      <input id="tt-topic" placeholder="masalan: horror story">
+      <button class="btn b" onclick="makeTitle()">✨ Banao</button>
+      <div class="out" id="tt-out" style="display:none"></div>
+      <button class="btn" id="tt-copy" style="display:none" onclick="copyOut('tt-out')">📋 Copy Karo</button>
+    </div>
+  </div>
+  <!-- NOTES -->
+  <div class="page" id="pg-notes">
+    <div class="card">
+      <h3>📝 Mere Notes</h3>
+      <textarea id="nt-txt" placeholder="Kuch likho..."></textarea>
+      <button class="btn b" onclick="addNote()">💾 Save Karo</button>
+      <div id="nt-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="box">
   <div id="row">
     <button class="cbtn" id="mic" onclick="listen()">🎤</button>
     <textarea id="inp" rows="1" placeholder="Bolo ya likho..."></textarea>
     <button class="cbtn" id="send" onclick="send()">➤</button>
   </div>
 </div>
+
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
-const SYS="You are Hamza AI, personal assistant of Hamza. ALWAYS reply in ROMAN URDU (like 'kya haal hai'). Be friendly, SHORT replies (2-4 lines max unless asked for more). Never say you are Muse/Meta AI.";
-let hist=[],voiceOn=false;
-try{hist=JSON.parse(localStorage.getItem('hamza_ai2')||'[]');}catch(e){}
+const SYS="You are Hamza AI, assistant of Hamza. ALWAYS Roman Urdu. SHORT (2-4 lines). Friendly. Never say Muse/Meta.";
+let hist=[],voiceOn=false,aiOk=false;
+try{hist=JSON.parse(localStorage.getItem('hamza_ai3')||'[]');}catch(e){}
+
+/* tabs */
+function tab(n){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('act'));
+  event.target.classList.add('act');
+  $('pg-'+n).classList.add('act');
+  $('box').style.display=n==='chat'?'block':'none';
+}
+/* status */
+async function checkAI(){
+  const s=$('st');s.textContent='…';s.className='';
+  try{
+    const r=await fetch('https://text.pollinations.ai/hi?private=true',{signal:AbortSignal.timeout(15000)});
+    aiOk=r.ok;
+  }catch(e){aiOk=false;}
+  s.textContent=aiOk?'● Online':'● Offline';s.className=aiOk?'ok':'bad';
+}
+/* chat */
 function render(){
   const c=$('chat');c.innerHTML='';
-  if(!hist.length)c.innerHTML='<div class="msg a">Salam Hamza! 👋 Main <b>Hamza AI</b> hoon!<br>Bolo ya likho — foran jawab dunga! 🎤</div>';
+  if(!hist.length)c.innerHTML='<div class="msg a">Salam Hamza! 👋 Kuch bhi poocho — ya upar <b>Script</b> dabao, main foran video script bana dunga! 🎬</div>';
   hist.forEach(m=>{const d=document.createElement('div');d.className='msg '+m.r;d.textContent=m.t;c.appendChild(d);});
   c.scrollTop=c.scrollHeight;
 }
-function save(){try{localStorage.setItem('hamza_ai2',JSON.stringify(hist.slice(-40)));}catch(e){}}
-function quick(t){$('inp').value=t;send();}
-function clearChat(){if(confirm('Saaf kar dun?')){hist=[];save();render();}}
-function toggleVoice(){voiceOn=!voiceOn;const b=$('vbtn');b.textContent=voiceOn?'🔊 Awaz On':'🔇 Awaz Off';b.classList.toggle('on',voiceOn);if(!voiceOn)speechSynthesis.cancel();}
-function speak(t){
-  if(!voiceOn||!('speechSynthesis' in window))return;
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(t.slice(0,200));u.lang='ur-PK';u.rate=1;
-  speechSynthesis.speak(u);
-}
-/* voice input */
+function save(){try{localStorage.setItem('hamza_ai3',JSON.stringify(hist.slice(-40)));}catch(e){}}
+function toggleVoice(){voiceOn=!voiceOn;$('vbtn').textContent=voiceOn?'🔊':'🔇';$('vbtn').classList.toggle('on',voiceOn);if(!voiceOn)speechSynthesis.cancel();}
+function speak(t){if(!voiceOn||!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.slice(0,180));u.lang='ur-PK';speechSynthesis.speak(u);}
 function listen(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){alert('Tumhara browser mic support nahi karta');return;}
-  const r=new SR();r.lang='ur-PK';r.interimResults=false;
-  $('mic').classList.add('rec');
+  if(!SR){alert('Mic support nahi hai');return;}
+  const r=new SR();r.lang='ur-PK';$('mic').classList.add('rec');
   r.onresult=e=>{$('inp').value=e.results[0][0].transcript;$('mic').classList.remove('rec');send();};
-  r.onerror=()=>$('mic').classList.remove('rec');
-  r.onend=()=>$('mic').classList.remove('rec');
+  r.onerror=r.onend=()=>$('mic').classList.remove('rec');
   r.start();
 }
 async function askAI(prompt){
   const ctx=hist.slice(-4).map(m=>(m.r==='u'?'H: ':'A: ')+m.content).join('\n');
-  const full=encodeURIComponent(SYS+"\n"+ctx+"\nH: "+prompt+"\nA:");
-  for(let a=0;a<2;a++){
-    try{
-      const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),25000);
-      const r=await fetch('https://text.pollinations.ai/'+full,{signal:ctl.signal});
-      clearTimeout(to);
-      if(!r.ok)throw 0;
-      const t=(await r.text()).trim();
-      if(t.length>2)return t;
-    }catch(e){}
-    await new Promise(r=>setTimeout(r,1200));
+  const urls=[
+    'https://text.pollinations.ai/'+encodeURIComponent(SYS+"\n"+ctx+"\nH: "+prompt+"\nA:"),
+  ];
+  for(const u of urls){
+    for(let a=0;a<2;a++){
+      try{
+        const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),20000);
+        const r=await fetch(u,{signal:ctl.signal});clearTimeout(to);
+        if(!r.ok)continue;
+        const t=(await r.text()).trim();
+        if(t.length>2)return t;
+      }catch(e){}
+      await new Promise(r=>setTimeout(r,1000));
+    }
   }
   return null;
 }
 async function send(){
-  const inp=$('inp'),t=inp.value.trim();
-  if(!t)return;
+  const inp=$('inp'),t=inp.value.trim();if(!t)return;
   inp.value='';$('send').disabled=true;
-  hist.push({r:'u',t:t});save();render();
+  hist.push({r:'u',t});save();render();
   const tp=document.createElement('div');tp.className='typing';tp.id='tp';
   tp.innerHTML='Soch raha<span>.</span><span>.</span><span>.</span>';
   $('chat').appendChild(tp);$('chat').scrollTop=$('chat').scrollHeight;
-  const t0=Date.now();
   const ans=await askAI(t);
   document.getElementById('tp')?.remove();
-  const final=ans||'😅 Thora slow hai — dobara bhejo!';
-  hist.push({r:'a',t:final});save();render();
-  speak(final);
+  const final=ans||'😅 Net slow hai — upar **Script** wala button dabao, wo bina net ke foran kaam karta hai!';
+  hist.push({r:'a',t:final});save();render();speak(final);
   $('send').disabled=false;
 }
 $('inp').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
-render();
+
+/* ===== OFFLINE TOOLS (bina net ke, foran!) ===== */
+const HOOKS={horror:["Raat ke 2 baj rahe thay...","Wo darwaza khud khul gaya!","Kisi ne peeche se awaz di..."],funny:["Aik din Hamza ne...","Phir aisa hua ke sab hans pare!","Aur end me..."],moral:["Aik gaon me aik larka rehta tha...","Us ne aik ghalti ki...","Aur us se ye sabaq mila..."],islamic:["Bismillah se shuru karte hain...","Aik buzurg farmate hain...","Allah hum sab ko hidayat de..."],love:["Us ki muskurahat pehli nazar me dil le gayi...","Phir kismat ne unhe milaya...","Aur ye kahani hamesha yaad rahegi..."]};
+const MIDS={horror:["Andhera gehra hota gaya.","Dil zor se dharakne laga.","Achanak light chali gayi!"],funny:["Sab hairan reh gaye!","Phir to qehqahon ka toofan aa gaya!","Hamza bhi hans hans ke lot pot ho gaya!"],moral:["Lekin us ne himmat nahi haari.","Mehnat ka phal meetha hota hai.","Gaon walon ne us ki tareef ki."],islamic:["Namaz ki pabandi zaroori hai.","Sach bolna sab se bari neki hai.","Maa baap ki khidmat jannat ka rasta hai."],love:["Dil ki dhadkan tez ho gayi.","Chandni raat me wada hua.","Mohabbat sab se khubsurat ehsaas hai."]};
+const ENDS={horror:"Aur kehte hain... wo saya aaj bhi wahan hai! 👻",funny:"To dosto, haste raho, muskurate raho! 😂",moral:"To yaad rakho — mehnat kabhi zaya nahi hoti! 💡",islamic:"Allah hum sab ko naik amal ki taufeeq de. Ameen! 🤲",love:"Aur ye thi aik khubsurat mohabbat ki kahani! ❤️"};
+function makeScript(){
+  const topic=$('sc-topic').value.trim()||'kahani',style=$('sc-style').value,n=+$('sc-len').value;
+  const H=HOOKS[style],M=MIDS[style];
+  let s="🎬 TITLE: "+topic.toUpperCase()+"\n\n";
+  for(let i=0;i<n;i++){
+    const line=i===0?H[i%H.length]:(i===n-1?ENDS[style]:M[i%M.length]);
+    s+="SCENE "+(i+1)+":\n"+line+"\n(Voice: thora jazbati parho)\n\n";
+  }
+  s+="\n📌 Hashtags: #"+topic.replace(/\s+/g,'')+" #viral #tiktok #pakistan";
+  $('sc-out').textContent=s;$('sc-out').style.display='block';$('sc-copy').style.display='block';
+  speak("Script tayyar hai!");
+}
+function makeTitle(){
+  const t=$('tt-topic').value.trim()||'meri video';
+  const titles=["🔥 "+t+" — dekh kar hairan reh jao ge!","😱 "+t+" | End dekhna mat bhoolna!","💯 "+t+" — sab se best video!","⚡ "+t+" | Viral hone wali video!"];
+  const tags="\n\n#"+t.replace(/\s+/g,'')+" #viral #tiktokpakistan #foryou #trending #desi #pakistan";
+  $('tt-out').textContent=titles.join("\n")+tags;
+  $('tt-out').style.display='block';$('tt-copy').style.display='block';
+  speak("Title tayyar hai!");
+}
+function copyOut(id){
+  const t=$(id).textContent;
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert('Copy ho gaya! ✅')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');ta.remove();alert('Copy ho gaya! ✅');
+  });
+}
+/* notes */
+function getNotes(){try{return JSON.parse(localStorage.getItem('hamza_notes')||'[]');}catch(e){return[];}}
+function addNote(){
+  const t=$('nt-txt').value.trim();if(!t)return;
+  const n=getNotes();n.unshift({t,d:new Date().toLocaleString('ur-PK')});
+  localStorage.setItem('hamza_notes',JSON.stringify(n.slice(0,50)));
+  $('nt-txt').value='';renderNotes();
+}
+function delNote(i){const n=getNotes();n.splice(i,1);localStorage.setItem('hamza_notes',JSON.stringify(n));renderNotes();}
+function renderNotes(){
+  const n=getNotes(),l=$('nt-list');l.innerHTML='';
+  if(!n.length)l.innerHTML='<p style="color:#666;font-size:13px;margin-top:10px">Koi note nahi — upar likh kar save karo!</p>';
+  n.forEach((x,i)=>{const d=document.createElement('div');d.className='note';
+    d.innerHTML='<button class="del" onclick="delNote('+i+')">✕</button><small>'+x.d+'</small><br>'+x.t.replace(/</g,'&lt;');l.appendChild(d);});
+}
+render();renderNotes();checkAI();
 </script>
 </body>
 </html>
